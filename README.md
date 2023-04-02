@@ -19,46 +19,48 @@ pip install git+https://github.com/FaddyManatee/embed-pagination
 ## Usage
 
 > **Important:**
-> discord.py master, or a form that has discord.ui.View is required to use this library!
+> discord.py or a form that has the discord.ui.View class is required to use this library!
 
 
 ### Quickstart
 ```python
-import paginator
+from paginator import Paginator
 
 # Create a list of embeds to paginate.
 embeds = [discord.Embed(title="First embed"),
           discord.Embed(title="Second embed"),
           discord.Embed(title="Third embed")]
 
-... # Inside a command.
-await paginator.Simple().start(ctx, pages=embeds)
+... # use the following inside a command.
+await Paginator().start(ctx, pages=embeds)
 ```
 
 > **Hint:**
-> The `ctx` parameter is of type `discord.Interaction`
+> The `ctx` parameter is an instance of `discord.Interaction` or `commands.Context`
 
 ### Advanced
 
-##### To use custom buttons, pass in the corresponding argument when you initiate the paginator. **THESE ARE OPTIONAL**
-
 ```python
-# These arguments override the default ones.
+"""
+These arguments override the defaults.
+"""
 
-PreviousButton = discord.ui.Button(...)
-NextButton = discord.ui.Button(...)
-PageCounterStyle = discord.ButtonStyle(...) # Only accepts discord.ButtonStyle
-InitialPage = 0 # Page to start the paginator on.
-DeleteOnTimeout = True # Delete paginator message on timeout. Default is False.
-timeout = 400 # Seconds to timeout. Default is 60.
-ephemeral = True # Defaults to False if not passed in.
+# Override appearance of the default paginator buttons.
+new_prev = discord.ui.Button(...)
+new_next = discord.ui.Button(...)
 
-await paginator.Simple(
-    PreviousButton=PreviousButton,
-    NextButton=NextButton,
-    PageCounterStyle=PageCounterStyle,
-    InitialPage=InitialPage,
-    DeleteOnTimeout=DeleteOnTimeout,
+counter_style = discord.ButtonStyle(...)  # Only accepts discord.ButtonStyle
+page_number = 2  # Page to start the paginator on. Default is 0.
+delete_on_timeout = True  # Delete paginator message on timeout. Default is False.
+timeout = 400  # Seconds until timeout. Default is 60.
+ephemeral = True  # Defaults to false if not passed in.
+
+await Paginator(
+    previous_button=new_prev,
+    next_button=new_next,
+    page_counter_style=counter_style,
+    initial_page=page_number,
+    delete_on_timeout=delete_on_timeout,
     timeout=timeout,
     ephemeral=ephemeral).start(ctx, pages=embeds)
 ```
